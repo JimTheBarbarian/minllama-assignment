@@ -96,8 +96,15 @@ class Attention(nn.Module):
         Make sure to use attention_dropout (self.attn_dropout) on the computed
         attention matrix before applying it to the value tensor.
         '''
-        # todo
-        raise NotImplementedError
+        b, num_heads, l, h = query.shape
+        # simple implementation 
+        key = torch.permute(key, (0,1,3,2))
+        scores = torch.matmul(query,key) / math.sqrt(self.head_dim)
+        attn_matrix = self.attn_dropout(F.softmax(scores, dim = -1))
+        output = torch.matmul(attn_matrix, value)
+        return output
+        
+        
 
     def forward(
         self,
