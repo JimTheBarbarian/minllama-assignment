@@ -70,8 +70,8 @@ def apply_rotary_emb(
     cos_vals = torch.cos(angles)
     sin_vals = torch.sin(angles)
 
-    cos_vals = reshape_for_broadcast(cos_vals, query)
-    sin_vals = reshape_for_broadcast(sin_vals, query)
+    cos_vals = cos_vals.unsqueeze(0).unsqueeze(2)
+    sin_vals = sin_vals.unsqueeze(0).unsqueeze(2)
 
     query_rot_real = query_real*cos_vals - query_imag*sin_vals
     query_rot_imag = query_real*sin_vals + query_imag*cos_vals
